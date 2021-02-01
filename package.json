@@ -1,0 +1,35 @@
+{
+  "name": "@tru_id/tru-sdk-web",
+  "version": "0.0.1-canary.0",
+  "description": "SDK for tru.ID that provides a helper method for requesting the `check_url` for PhoneCheck and SubscriberCheck",
+  "author": {
+    "name": "tru.ID",
+    "email": "community@tru.id",
+    "url": "https://tru.id"
+  },
+  "keywords": ["2FA", "MFA", "Number Verify"],
+  "main": "dist/tru-id-sdk.cjs.js",
+  "module": "dist/tru-id-sdk.esm.js",
+  "browser": "dist/tru-id-sdk.umd.js",
+  "dependencies": {
+    "ms": "^2.0.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "jest": "^26.6.3",
+    "rollup": "^1.29.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "pretest": "npm run build",
+    "publish-canary": "npm publish --access public --tag canary"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT"
+}
