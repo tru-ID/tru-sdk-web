@@ -7,7 +7,11 @@
     "email": "community@tru.id",
     "url": "https://tru.id"
   },
-  "keywords": ["2FA", "MFA", "Number Verify"],
+  "keywords": [
+    "2FA",
+    "MFA",
+    "Number Verify"
+  ],
   "main": "dist/tru-id-sdk.cjs.js",
   "module": "dist/tru-id-sdk.esm.js",
   "browser": "dist/tru-id-sdk.umd.js",
@@ -19,7 +23,8 @@
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "jest": "^26.6.3",
-    "rollup": "^1.29.0"
+    "rollup": "^1.29.0",
+    "standard-version": "^9.1.0"
   },
   "scripts": {
     "build": "rollup -c",
