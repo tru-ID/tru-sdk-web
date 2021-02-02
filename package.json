@@ -31,7 +31,16 @@
     "dev": "rollup -c -w",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "pretest": "npm run build",
-    "publish-canary": "npm publish --access public --tag canary"
+    "publish-canary": "npm publish --access public --tag canary",
+    "changelog": "standard-version",
+    "release": "npm publish"
+  },
+  "standard-version": {
+    "skip": {
+      "commit": true,
+      "bump": true,
+      "tag": true
+    }
   },
   "files": [
     "dist"
