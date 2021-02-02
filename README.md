@@ -130,7 +130,7 @@ async function handlePhoneCheckCreation(result) {
 3. Commit the changes read for release: `git commit -m 'chore(release): v{version}`
 4. Tag the release `git tag v{version}`
 5. Push the tags `git push --follow-tags origin main`
-6. Publish to NPM `yarn publish`
+6. Publish to NPM `yarn run publish-canary`
 
 ## License
 
