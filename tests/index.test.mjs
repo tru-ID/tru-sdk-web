@@ -1,4 +1,4 @@
-import truID from '../dist/tru-id-sdk.esm'
+import truID from '../dist/tru-id-sdk'
 
 const testUrl = 'https://example.com'
 

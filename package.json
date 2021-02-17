@@ -1,6 +1,6 @@
 {
   "name": "@tru_id/tru-sdk-web",
-  "version": "0.0.1-canary.1",
+  "version": "0.0.1-canary.2",
   "description": "SDK for tru.ID that provides a helper method for requesting the `check_url` for PhoneCheck and SubscriberCheck",
   "author": {
     "name": "tru.ID",
@@ -12,8 +12,8 @@
     "MFA",
     "Number Verify"
   ],
-  "main": "dist/tru-id-sdk.cjs.js",
-  "module": "dist/tru-id-sdk.esm.js",
+  "main": "dist/tru-id-sdk.cjs",
+  "module": "dist/tru-id-sdk.mjs",
   "browser": "dist/tru-id-sdk.umd.js",
   "type": "module",
   "devDependencies": {
