@@ -9,7 +9,7 @@
 * @param {Number} config.windowCloseTimeout The timeout period in milliseconds where the window is closed if `config.checkMethod` is set to `window`. Defaults to 3000 milliseconds.
 */
 function openCheckUrl(checkUrl, config = {checkMethod: "image", debug: false}) {
-   config.windowCloseTimeout = config.windowCloseTimeout ?? 3000
+   config.windowCloseTimeout = config.windowCloseTimeout || 3000
 
    function log() {
 	   if(config.debug) {
