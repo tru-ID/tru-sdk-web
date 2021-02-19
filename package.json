@@ -7,6 +7,7 @@
     "email": "community@tru.id",
     "url": "https://tru.id"
   },
+  "repository": "github:tru-ID/tru-sdk-web",
   "keywords": [
     "2FA",
     "MFA",
