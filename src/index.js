@@ -1,4 +1,4 @@
-function _createIFrameSrc(checkUrl, config = { debug: false }) {
+export function _createIFrameSrc(checkUrl, config = { debug: false }) {
   const html = `
 		<body><script>
 		const debug = ${config.debug}
@@ -7,8 +7,6 @@ function _createIFrameSrc(checkUrl, config = { debug: false }) {
 		img.style.width = 0
 		img.setAttribute('referrerpolicy', 'no-referrer')
 		img.src = "${checkUrl}"
-
-    console.log('HELLO IFRAME')
 	
 		function handleEndEvent() {
 			if(debug) {
@@ -16,9 +14,16 @@ function _createIFrameSrc(checkUrl, config = { debug: false }) {
 			}
 			window.parent.postMessage({check_url: "${checkUrl}"}, "${window.origin}")
 		}
+
+    function handleLoadError() {
+      if(debug) {
+				console.log('error loading image')
+			}
+      window.parent.postMessage({ error: true }, "${window.origin}")
+    }
 	
 		img.onload = handleEndEvent
-		img.onerror = handleEndEvent
+		img.onerror = handleLoadError
 		document.body.appendChild(img)
 		</script></body>
 		`
@@ -38,7 +43,7 @@ function _createIFrameSrc(checkUrl, config = { debug: false }) {
  * @param {Boolean} config.force It will not try to check the device IP against the coverage API.
  * @param {Boolean} config.debug It will console log more debug info.
  */
-async function openCheckUrl(checkUrl, customConfig) {
+export async function openCheckUrl(checkUrl, customConfig) {
   const defaultConfig = {
     checkMethod: 'image',
     debug: false,
@@ -64,10 +69,7 @@ async function openCheckUrl(checkUrl, customConfig) {
   // Check device coverage
   // unless the user is passing force:true to skip the check
   if (!config.force) {
-    console.log('url', `${apiBaseUrl}/public/coverage/v0.1/device_ip`)
-    console.log('HELLO1')
     const res = await fetch(`${apiBaseUrl}/public/coverage/v0.1/device_ip`)
-    console.log(res)
     if (res.status === 400 || res.status === 412) {
       // 400 MNO not supported
       // 412 Not a mobile IP
@@ -78,30 +80,26 @@ async function openCheckUrl(checkUrl, customConfig) {
     }
   }
 
-  console.log('HELLO2')
-
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (config.checkMethod === 'image') {
       const iframe = document.createElement('iframe')
       iframe.style.display = 'none'
       iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts')
       iframe.src = _createIFrameSrc(checkUrl)
 
-      console.log('checkUrl', checkUrl)
-
       const handleIFrameMessage = (event) => {
         log(event)
-        if (event.data.check_url === checkUrl) {
+        if (event.error) {
+          reject(new Error('Error loading invisible image'))
+        } else if (event.data.check_url === checkUrl) {
           window.removeEventListener('message', handleIFrameMessage)
           document.body.removeChild(iframe)
-          console.log('FINISHED')
           resolve()
         }
       }
       window.addEventListener('message', handleIFrameMessage)
 
       document.body.appendChild(iframe)
-      console.log('iframe appended')
     } else {
       const win = window.open(checkUrl)
       setTimeout(() => {
@@ -110,9 +108,4 @@ async function openCheckUrl(checkUrl, customConfig) {
       }, config.windowCloseTimeout)
     }
   })
-}
-
-export default {
-  openCheckUrl,
-  _createIFrameSrc,
 }
