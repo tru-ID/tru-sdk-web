@@ -17,15 +17,26 @@
   "browser": "dist/tru-id-sdk.umd.js",
   "type": "module",
   "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
     "jest": "^26.6.3",
+    "jest-fetch-mock": "^3.0.3",
+    "nock": "^13.0.11",
+    "prettier": "^2.3.0",
     "rollup": "^1.29.0",
+    "serve": "^11.3.2",
     "standard-version": "^9.1.0"
   },
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest",
-    "pretest": "npm run build",
+    "serve": "serve",
+    "lint": "eslint src",
+    "prettier": "prettier src --write",
+    "test": "jest",
     "publish-canary": "npm publish --access public --tag canary",
     "changelog": "standard-version"
   },
