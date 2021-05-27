@@ -10,14 +10,14 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
 	
 		function handleEndEvent() {
 			if(debug) {
-				console.log('image loaded')
+				console.log('tru.ID:sdk-web image loaded')
 			}
 			window.parent.postMessage({check_url: "${checkUrl}"}, "${window.origin}")
 		}
 
     function handleLoadError() {
       if(debug) {
-				console.log('error loading image')
+				console.log('tru.ID:sdk-web error loading image')
 			}
       window.parent.postMessage({ error: true }, "${window.origin}")
     }
@@ -37,11 +37,11 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
  * A PhoneCheck is a test if the current device has authenticated with the mobile carrier using the expected IMSI (SIM Card) and MSISDN (Phone Number).
  *
  * @param {String} checkUrl The tru.ID `check_url` to be requested over the mobile data network as part of the verification workflow.
- * @param {Object} config
- * @param {String} config.checkMethod When set to `image` the library will load the `check_url` using a zero pixel image loaded within an <iframe>. When set to `window` the check_url will briefly launch a window that will then be closed.
- * @param {Number} config.windowCloseTimeout The timeout period in milliseconds where the window is closed if `config.checkMethod` is set to `window`. Defaults to 3000 milliseconds.
- * @param {Boolean} config.force It will not try to check the device IP against the coverage API.
- * @param {Boolean} config.debug It will console log more debug info.
+ * @param {Object} customConfig
+ * @param {String} customConfig.checkMethod When set to `image` the library will load the `check_url` using a zero pixel image loaded within an <iframe>. When set to `window` the check_url will briefly launch a window that will then be closed.
+ * @param {Number} customConfig.windowCloseTimeout The timeout period in milliseconds where the window is closed if `customConfig.checkMethod` is set to `window`. Defaults to 3000 milliseconds.
+ * @param {Boolean} customConfig.force It will not try to check the device IP against the coverage API.
+ * @param {Boolean} customConfig.debug It will console log more debug info.
  */
 export async function openCheckUrl(checkUrl, customConfig) {
   const defaultConfig = {
@@ -58,9 +58,9 @@ export async function openCheckUrl(checkUrl, customConfig) {
     }
   }
 
-  log('tru.ID:phoneCheck')
+  log('tru.ID:sdk-web')
   if (!checkUrl) {
-    throw new Error('tru.ID:phoneCheck: checkUrl is required')
+    throw new Error('tru.ID:sdk-web checkUrl is required')
   }
 
   const url = new URL(checkUrl)
@@ -74,9 +74,11 @@ export async function openCheckUrl(checkUrl, customConfig) {
       // 400 MNO not supported
       // 412 Not a mobile IP
       const json = await res.json()
-      throw new Error(json.detail)
+      throw new Error(`tru.ID:sdk-web ${json.detail}`)
     } else if (!res.ok) {
-      throw new Error('There was an error checking the device coverage')
+      throw new Error(
+        'tru.ID:sdk-web There was an error checking the device coverage',
+      )
     }
   }
 
@@ -88,9 +90,9 @@ export async function openCheckUrl(checkUrl, customConfig) {
       iframe.src = _createIFrameSrc(checkUrl)
 
       const handleIFrameMessage = (event) => {
-        log(event)
+        log(`tru.ID:sdk-web ${event}`)
         if (event.error) {
-          reject(new Error('Error loading invisible image'))
+          reject(new Error('tru.ID:sdk-web Error loading invisible image'))
         } else if (event.data.check_url === checkUrl) {
           window.removeEventListener('message', handleIFrameMessage)
           document.body.removeChild(iframe)
