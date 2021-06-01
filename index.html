@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web SDK test page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h2>Test web SDK</h2>
+    <div class="flex" style="margin: 0 -30px">
+      <div class="row">
+        <p class="explain">
+          You need the
+          <a href="https://github.com/tru-ID/dev-server">node server</a> running
+          to be able to create a real PhoneCheck.
+        </p>
+        <div class="box">
+          <label for="input-phone-number">Mobile number</label>
+          <input type="text" id="input-phone-number" value="" />
+        </div>
+        <div class="box">
+          <label for="input-server-url">Server url</label>
+          <input
+            type="text"
+            id="input-server-url"
+            placeholder="https://xxxxxxx.ngrok.io"
+            value=""
+          />
+        </div>
+        <div class="box">
+          <button type="button" id="btn-create-phonecheck">
+            Create PhoneCheck
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <p class="explain">
+          Useful to check the device coverage without the need to run the node
+          server and create a real PhoneCheck
+        </p>
+        <div class="box">
+          <label for="input-server-url">test check_url</label>
+          <input
+            type="text"
+            id="input-test-url"
+            value="https://eu.api.tru.id/phone_check/v0.1/checks/123-test-abc/redirect"
+          />
+        </div>
+        <div class="box">
+          <button type="button" id="btn-test-check-url">
+            Test check_url only
+          </button>
+        </div>
+      </div>
+    </div>
+    <span id="spinner" class="spinner hidden"></span>
+    <pre class="box" id="output" />
+    <script src="/dist/tru-id-sdk.umd.js"></script>
+    <script>
+      const btnCreatePhoneCheck = document.getElementById(
+        'btn-create-phonecheck',
+      )
+      const btnTestCheckUrl = document.getElementById('btn-test-check-url')
+      const inputPhoneNumber = document.getElementById('input-phone-number')
+      const inputServerUrl = document.getElementById('input-server-url')
+      const inputTestUrl = document.getElementById('input-test-url')
+      const output = document.getElementById('output')
+      const spinner = document.getElementById('spinner')
+      output.innerHTML = ''
+
+      async function createPhoneCheck() {
+        spinner.classList.remove('hidden')
+        const phone_number = inputPhoneNumber.value
+        const serverUrl = inputServerUrl.value
+        let checkUrl
+        // CREATE PHONE CHECK
+        try {
+          const res = await fetch(`${serverUrl}/phone-check`, {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              phone_number,
+            }),
+          })
+          const json = await res.json()
+          output.innerHTML += JSON.stringify(json, null, 2)
+          if (!res.ok) {
+            console.error('Error creating phone check')
+            return
+          }
+          checkurl = json.check_url
+        } catch (err) {
+          output.innerHTML = 'Error creating phone check'
+          console.error(err)
+        }
+        if (checkUrl) {
+          try {
+            await tru.ID.openCheckUrl(checkUrl)
+            output.innerHTML += 'URL opened\n '
+            output.innerHTML += JSON.stringify(result, null, 2)
+          } catch (err) {
+            console.error('error', err)
+            output.innerHTML += err.message + '\n'
+          }
+        }
+        spinner.classList.add('hidden')
+      }
+
+      async function checkUrlOnly() {
+        spinner.classList.remove('hidden')
+        const testUrl = inputTestUrl.value
+        try {
+          await tru.ID.openCheckUrl(testUrl)
+          output.innerHTML += 'URL opened\n '
+          output.innerHTML += JSON.stringify(result, null, 2)
+        } catch (err) {
+          output.innerHTML += err.message + '\n'
+        }
+        spinner.classList.add('hidden')
+      }
+
+      btnCreatePhoneCheck.addEventListener('click', createPhoneCheck)
+      btnTestCheckUrl.addEventListener('click', checkUrlOnly)
+    </script>
+  </body>
+</html>

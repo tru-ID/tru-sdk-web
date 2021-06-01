@@ -1,0 +1,81 @@
+body {
+  padding: 20px;
+  font-family: sans-serif;
+}
+.box {
+  padding: 10px 0;
+}
+
+@keyframes spinner-kf {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner,
+.spinner:before {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  transform-origin: 50%;
+  border: 2px solid transparent;
+  border-color: #74a8d0 #74a8d0 transparent transparent;
+  border-radius: 50%;
+  content: '';
+  animation: linear spinner-kf 900ms infinite;
+  position: relative;
+  vertical-align: inherit;
+  line-height: inherit;
+}
+.spinner {
+  top: 3px;
+  margin: 0 3px;
+}
+.spinner:before {
+  border-color: #74a8d0 #74a8d0 transparent transparent;
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  border-style: solid;
+}
+pre {
+  overflow-y: scroll;
+  background-color: #eee;
+  white-space: pre-wrap;
+  padding: 16px 16px;
+}
+input {
+  min-width: 300px;
+  display: block;
+  padding: 4px 6px;
+}
+label {
+  display: block;
+  margin-bottom: 4px;
+}
+.hidden {
+  display: none;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -30px;
+}
+
+.row {
+  margin: 0 30px;
+  max-width: 300px;
+}
+
+@media screen and (min-width: 767px) {
+  .flex {
+    flex-direction: row;
+  }
+  .explain {
+    min-height: 60px;
+  }
+}
