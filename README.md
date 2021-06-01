@@ -8,7 +8,7 @@ In case the device IP belongs to a MNO we don't support it will throw an error w
 
 In case the device IP is not from a mobile network it will throw an error with the message `tru.ID:sdk-web Not a mobile IP`, in this case the user might be using the wifi with a broadband connection.
 
-If you want to ignore this check you can pass `{ force: true }` in the `config` and proceed regardless.
+If you want to ignore this check you can pass `{ checkDeviceCoverage: false }` in the `config` and proceed regardless.
 
 ## Installation
 
@@ -73,10 +73,10 @@ The configuration options are:
   // Defaults to 3000.
   windowCloseTimeout: Number,
 
-  // It will skip the device coverage check to determine
+  // It will run the device coverage check to determine
   // if the device is on a mobile IP
-  // Defaults to false
-  force: boolean
+  // Defaults to true
+  checkDeviceCoverage: boolean
 }
 ```
 

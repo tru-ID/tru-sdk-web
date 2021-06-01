@@ -40,14 +40,14 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
  * @param {Object} customConfig
  * @param {String} customConfig.checkMethod When set to `image` the library will load the `check_url` using a zero pixel image loaded within an <iframe>. When set to `window` the check_url will briefly launch a window that will then be closed.
  * @param {Number} customConfig.windowCloseTimeout The timeout period in milliseconds where the window is closed if `customConfig.checkMethod` is set to `window`. Defaults to 3000 milliseconds.
- * @param {Boolean} customConfig.force It will not try to check the device IP against the coverage API.
+ * @param {Boolean} customConfig.checkDeviceCoverage It will not try to check the device IP against the coverage API.
  * @param {Boolean} customConfig.debug It will console log more debug info.
  */
 export async function openCheckUrl(checkUrl, customConfig) {
   const defaultConfig = {
     checkMethod: 'image',
     debug: false,
-    force: false,
+    checkDeviceCoverage: true,
     windowCloseTimeout: 3000,
   }
   const config = Object.assign(defaultConfig, customConfig)
@@ -67,8 +67,8 @@ export async function openCheckUrl(checkUrl, customConfig) {
   const apiBaseUrl = url.origin
 
   // Check device coverage
-  // unless the user is passing force:true to skip the check
-  if (!config.force) {
+  // unless the user is passing checkDeviceCoverage:false to skip the check
+  if (config.checkDeviceCoverage) {
     const res = await fetch(`${apiBaseUrl}/public/coverage/v0.1/device_ip`)
     if (res.status === 400 || res.status === 412) {
       // 400 MNO not supported

@@ -65,7 +65,7 @@ describe('WEB SDK', () => {
     expect(redirect.isDone()).toBe(false)
   })
 
-  test('should proceed when "force" is passed', async () => {
+  test('should not proceed when "checkDeviceCoverage: false" is passed', async () => {
     const coverage = nock(baseUrl)
       .get('/public/coverage/v0.1/device_ip')
       .reply(412, {
@@ -77,7 +77,7 @@ describe('WEB SDK', () => {
         'Content-Type': 'image/svg+xml',
       })
     await truID.openCheckUrl(testUrl, {
-      force: true,
+      checkDeviceCoverage: false,
     })
     // device coverage url is never called
     expect(coverage.isDone()).toBe(false)
