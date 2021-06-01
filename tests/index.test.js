@@ -1,7 +1,7 @@
 require('jest-fetch-mock')
 
 const nock = require('nock')
-const truID = require('../dist/tru-id-sdk.cjs')
+const truID = require('../dist/tru-id-sdk.js')
 
 const baseUrl = 'https://eu.api.tru.id'
 
