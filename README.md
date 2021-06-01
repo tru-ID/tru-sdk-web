@@ -115,7 +115,7 @@ The configuration options are:
         try {
           await tru.ID.openCheckUrl(phoneCheckResource.check_url)
         } catch (e) {
-          if (String(e.message).match(/not a mobile ip/i)) {
+          if (e.code === tru.ID.DeviceCoverageErrors.NotMobileIP) {
             // tell the user they should turn off the wifi
             // and use the mobile connection before proceeding
           }

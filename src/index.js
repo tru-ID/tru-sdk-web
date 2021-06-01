@@ -1,3 +1,8 @@
+export const DeviceCoverageErrors = {
+  UnsupportedMNO: 400,
+  NotMobileIP: 412,
+}
+
 export function _createIFrameSrc(checkUrl, config = { debug: false }) {
   const html = `
 		<body><script>
@@ -10,14 +15,14 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
 	
 		function handleEndEvent() {
 			if(debug) {
-				console.log('tru.ID:sdk-web image loaded')
+				console.log('image loaded')
 			}
 			window.parent.postMessage({check_url: "${checkUrl}"}, "${window.origin}")
 		}
 
     function handleLoadError() {
       if(debug) {
-				console.log('tru.ID:sdk-web error loading image')
+				console.log('error loading image')
 			}
       window.parent.postMessage({ error: true }, "${window.origin}")
     }
@@ -54,13 +59,12 @@ export async function openCheckUrl(checkUrl, customConfig) {
 
   function log(...args) {
     if (config.debug) {
-      console.log.apply(null, ...args)
+      console.log('tru.ID:sdk-web ', ...args)
     }
   }
 
-  log('tru.ID:sdk-web')
   if (!checkUrl) {
-    throw new Error('tru.ID:sdk-web checkUrl is required')
+    throw new Error('checkUrl is required')
   }
 
   const url = new URL(checkUrl)
@@ -70,15 +74,17 @@ export async function openCheckUrl(checkUrl, customConfig) {
   // unless the user is passing checkDeviceCoverage:false to skip the check
   if (config.checkDeviceCoverage) {
     const res = await fetch(`${apiBaseUrl}/public/coverage/v0.1/device_ip`)
-    if (res.status === 400 || res.status === 412) {
-      // 400 MNO not supported
-      // 412 Not a mobile IP
-      const json = await res.json()
-      throw new Error(`tru.ID:sdk-web ${json.detail}`)
+    if (res.status === 400) {
+      const err = new Error('MNO not supported')
+      err.code = DeviceCoverageErrors.UnsupportedMNO
+      throw err
+    }
+    if (res.status === 412) {
+      const err = new Error('Not a mobile IP')
+      err.code = DeviceCoverageErrors.NotMobileIP
+      throw err
     } else if (!res.ok) {
-      throw new Error(
-        'tru.ID:sdk-web There was an error checking the device coverage',
-      )
+      throw new Error('There was an error checking the device coverage')
     }
   }
 
@@ -90,9 +96,9 @@ export async function openCheckUrl(checkUrl, customConfig) {
       iframe.src = _createIFrameSrc(checkUrl)
 
       const handleIFrameMessage = (event) => {
-        log(`tru.ID:sdk-web ${event}`)
+        log(`${event}`)
         if (event.error) {
-          reject(new Error('tru.ID:sdk-web Error loading invisible image'))
+          reject(new Error('Error loading invisible image'))
         } else if (event.data.check_url === checkUrl) {
           window.removeEventListener('message', handleIFrameMessage)
           document.body.removeChild(iframe)

@@ -40,8 +40,9 @@ describe('WEB SDK', () => {
       .replyWithFile(200, 'tests/logo.svg', {
         'Content-Type': 'image/svg+xml',
       })
-    await expect(truID.openCheckUrl(testUrl)).rejects.toThrow(
-      'MNO not supported',
+    await expect(truID.openCheckUrl(testUrl)).rejects.toHaveProperty(
+      'code',
+      truID.DeviceCoverageErrors.UnsupportedMNO,
     )
     expect(coverage.isDone()).toBe(true)
     // check url never called
@@ -59,7 +60,10 @@ describe('WEB SDK', () => {
       .replyWithFile(200, 'tests/logo.svg', {
         'Content-Type': 'image/svg+xml',
       })
-    await expect(truID.openCheckUrl(testUrl)).rejects.toThrow('Not mobile IP')
+    await expect(truID.openCheckUrl(testUrl)).rejects.toHaveProperty(
+      'code',
+      truID.DeviceCoverageErrors.NotMobileIP,
+    )
     expect(coverage.isDone()).toBe(true)
     // check url never called
     expect(redirect.isDone()).toBe(false)
