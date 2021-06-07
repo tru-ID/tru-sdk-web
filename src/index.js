@@ -117,3 +117,8 @@ export async function openCheckUrl(checkUrl, customConfig) {
     }
   })
 }
+
+export default {
+  DeviceCoverageErrors,
+  openCheckUrl,
+}
