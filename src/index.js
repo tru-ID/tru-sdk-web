@@ -17,15 +17,15 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
 			if(debug) {
 				console.log('image loaded')
 			}
-			window.parent.postMessage({check_url: "${checkUrl}"}, "${window.origin}")
+			window.parent.postMessage({ error: false}, "${window.origin}")
 		}
 
-    function handleLoadError() {
-      if(debug) {
-				console.log('error loading image')
-			}
-      window.parent.postMessage({ error: true }, "${window.origin}")
-    }
+        function handleLoadError() {
+            if(debug) {
+                console.log('error loading image')
+            }
+            window.parent.postMessage({ error: true }, "${window.origin}")
+        }
 	
 		img.onload = handleEndEvent
 		img.onerror = handleLoadError
@@ -96,11 +96,12 @@ export async function openCheckUrl(checkUrl, customConfig) {
       iframe.src = _createIFrameSrc(checkUrl)
 
       const handleIFrameMessage = (event) => {
-        log(`${event}`)
+        log(`${JSON.stringify(event)}`)
+        window.removeEventListener('message', handleIFrameMessage)
+
         if (event.error) {
           reject(new Error('Error loading invisible image'))
-        } else if (event.data.check_url === checkUrl) {
-          window.removeEventListener('message', handleIFrameMessage)
+        } else {
           document.body.removeChild(iframe)
           resolve()
         }
