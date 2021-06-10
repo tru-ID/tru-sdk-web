@@ -156,7 +156,8 @@ In another terminal you can run `yarn serve` to open a test web page where you c
 3. Commit the changes read for release: `git commit -m 'chore(release): v{version}`
 4. Tag the release `git tag v{version}`
 5. Push the tags `git push --follow-tags origin main`
-6. Publish to NPM `yarn run publish-canary`
+6. Build the project with `yarn build`
+6. Publish to NPM `npm publish --access public`
 
 ## License
 

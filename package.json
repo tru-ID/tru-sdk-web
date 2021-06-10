@@ -39,7 +39,7 @@
     "lint": "eslint src",
     "prettier": "prettier src --write",
     "test": "jest",
-    "publish-canary": "npm publish --access public --tag canary",
+    "publish-canary": "npm publish --access public",
     "changelog": "standard-version"
   },
   "standard-version": {
