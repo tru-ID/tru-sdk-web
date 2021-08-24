@@ -15,13 +15,13 @@ If you want to ignore this check you can pass `{ checkDeviceCoverage: false }` i
 ### Via jsDelivr CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
 ```
 
 ### Via NPM
 
 ```sh
-$ npm install @tru_id/tru-sdk-web@canary
+$ npm install @tru_id/tru-sdk-web
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ $ npm install @tru_id/tru-sdk-web@canary
 When installed via a CDN a `tru.ID` global is installed.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
 <script>
   tru.ID.openCheckUrl(url, config)
 </script>
@@ -84,7 +84,7 @@ The configuration options are:
 
 ### Via jsDelivr CDN
 
-`https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js`
+`https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js`
 
 ```html
 <body>
@@ -94,7 +94,7 @@ The configuration options are:
     <input type="submit" value="Check" />
   </form>
 
-  <script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
   <script>
     async phoneCheck(ev) {
         ev.preventDefault()
@@ -131,7 +131,7 @@ The configuration options are:
 ### Via NPM
 
 ```sh
-$ npm install @tru_id/tru-sdk-web@canary
+$ npm install @tru_id/tru-sdk-web
 ```
 
 ```js
