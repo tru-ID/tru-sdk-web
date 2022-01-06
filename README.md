@@ -1,12 +1,14 @@
 # tru.ID SDK for Web Applications
 
-SDK for tru.ID that provides a helper function for requesting the `check_url` for [PhoneCheck](https://tru.id/docs/phone-check) and [SubscriberCheck](https://tru.id/docs/subscriber-check).
+[![License][license-image]][license-url]
 
-With the default `config` the SDK will call our public device coverage API and try to determine if the device is using a mobile IP.
+The Web SDK for tru.ID providing a helper function for requesting the `check_url` for [PhoneCheck](https://tru.id/docs/phone-check) and [SubscriberCheck](https://tru.id/docs/subscriber-check).
 
-In case the device IP belongs to a MNO we don't support it will throw an error with the message `tru.ID:sdk-web MNO not supported`
+With the default `config` the SDK will call the public Reachability API and try to determine if the device is using a mobile IP.
 
-In case the device IP is not from a mobile network it will throw an error with the message `tru.ID:sdk-web Not a mobile IP`, in this case the user might be using the wifi with a broadband connection.
+If the device IP belongs to a MNO (Mobile Network Operator) that tru.ID doesn't support it will throw an error with the message `tru.ID:sdk-web MNO not supported`
+
+If the device IP is not from a mobile network it will throw an error with the message `tru.ID:sdk-web Not a mobile IP`, in this case the user might be using the wifi with a broadband connection.
 
 If you want to ignore this check you can pass `{ checkDeviceCoverage: false }` in the `config` and proceed regardless.
 
@@ -15,13 +17,13 @@ If you want to ignore this check you can pass `{ checkDeviceCoverage: false }` i
 ### Via jsDelivr CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
 ```
 
 ### Via NPM
 
 ```sh
-$ npm install @tru_id/tru-sdk-web@canary
+$ npm install @tru_id/tru-sdk-web
 ```
 
 ## Usage
@@ -31,7 +33,7 @@ $ npm install @tru_id/tru-sdk-web@canary
 When installed via a CDN a `tru.ID` global is installed.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
 <script>
   tru.ID.openCheckUrl(url, config)
 </script>
@@ -84,7 +86,7 @@ The configuration options are:
 
 ### Via jsDelivr CDN
 
-`https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js`
+`https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js`
 
 ```html
 <body>
@@ -94,7 +96,7 @@ The configuration options are:
     <input type="submit" value="Check" />
   </form>
 
-  <script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web@canary/dist/tru-id-sdk.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
   <script>
     async phoneCheck(ev) {
         ev.preventDefault()
@@ -131,7 +133,7 @@ The configuration options are:
 ### Via NPM
 
 ```sh
-$ npm install @tru_id/tru-sdk-web@canary
+$ npm install @tru_id/tru-sdk-web
 ```
 
 ```js
@@ -162,3 +164,12 @@ In another terminal you can run `yarn serve` to open a test web page where you c
 ## License
 
 [MIT](LICENSE)
+
+## Meta
+
+Distributed under the MIT license. See ``LICENSE`` for more information.
+
+[https://github.com/tru-ID](https://github.com/tru-ID)
+
+[license-image]: https://img.shields.io/badge/License-MIT-blue.svg
+[license-url]: LICENSE
