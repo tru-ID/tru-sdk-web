@@ -147,18 +147,18 @@ async function handlePhoneCheckCreation(result) {
 
 ## Local development
 
-You can run `yarn dev` that will open rollup with watch mode that will re-compile the SDK after every change.
+You can run `npm run dev` that will open rollup with watch mode that will re-compile the SDK after every change.
 
-In another terminal you can run `yarn serve` to open a test web page where you can test real phone checks if you have the node server running or you can simply check a PhoneCheck `check_url`.
+In another terminal you can run `npm run serve` to open a test web page where you can test real phone checks if you have the node server running or you can simply check a PhoneCheck `check_url`.
 
 ## Releasing
 
 1. Bump the version if required
-2. Run `yarn changelog` to auto-update the `CHANGELOG.md` and manually edit to finesse
+2. Run `npm run changelog` to auto-update the `CHANGELOG.md` and manually edit to finesse
 3. Commit the changes read for release: `git commit -m 'chore(release): v{version}`
 4. Tag the release `git tag v{version}`
 5. Push the tags `git push --follow-tags origin main`
-6. Build the project with `yarn build`
+6. Build the project with `npm run build`
 6. Publish to NPM `npm publish --access public`
 
 ## License
