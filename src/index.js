@@ -52,7 +52,7 @@ export async function getReachability(apiBaseUrl) {
   const baseUrl = url.origin
 
   const apiResponse = await fetch(`${baseUrl}/public/coverage/v0.1/device_ip`)
-  const responseBody = await apiResponse.json();
+  const responseBody = await apiResponse.json()
 
   if (apiResponse.status === 200) {
     return { reachable: true, body: responseBody, status: apiResponse.status }
@@ -132,5 +132,5 @@ export async function openCheckUrl(checkUrl, customConfig) {
 export default {
   DeviceCoverageErrors,
   openCheckUrl,
-  getReachability
+  getReachability,
 }
