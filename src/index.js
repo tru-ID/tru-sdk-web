@@ -37,6 +37,31 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
 }
 
 /**
+ * Opens the provide `apiBaseUrl` in order to perform the Reachability check.
+ *
+ * A Reachability check is a test if the current device's active data connection is one of a mobile carrier, and that this carrier is supported by tru.ID's Phone, Subscriber, and SIM checks.
+ *
+ * @param {String} apiBaseUrl The tru.ID `base_url` used to communicate with the tru.ID APIs. For example: `https://eu.api.tru.id`.
+ */
+export async function getReachability(apiBaseUrl) {
+  if (!apiBaseUrl) {
+    throw new Error('apiBaseUrl is required')
+  }
+
+  const url = new URL(apiBaseUrl)
+  const baseUrl = url.origin
+
+  const apiResponse = await fetch(`${baseUrl}/public/coverage/v0.1/device_ip`)
+  const responseBody = await apiResponse.json();
+
+  if (apiResponse.status === 200) {
+    return { reachable: true, body: responseBody, status: apiResponse.status }
+  }
+
+  return { reachable: false, body: responseBody, status: apiResponse.status }
+}
+
+/**
  * Opens the provide `checkUrl` in order to perform the PhoneCheck.
  *
  * A PhoneCheck is a test if the current device has authenticated with the mobile carrier using the expected IMSI (SIM Card) and MSISDN (Phone Number).
@@ -67,25 +92,10 @@ export async function openCheckUrl(checkUrl, customConfig) {
     throw new Error('checkUrl is required')
   }
 
-  const url = new URL(checkUrl)
-  const apiBaseUrl = url.origin
-
   // Check device coverage
   // unless the user is passing checkDeviceCoverage:false to skip the check
   if (config.checkDeviceCoverage) {
-    const res = await fetch(`${apiBaseUrl}/public/coverage/v0.1/device_ip`)
-    if (res.status === 400) {
-      const err = new Error('MNO not supported')
-      err.code = DeviceCoverageErrors.UnsupportedMNO
-      throw err
-    }
-    if (res.status === 412) {
-      const err = new Error('Not a mobile IP')
-      err.code = DeviceCoverageErrors.NotMobileIP
-      throw err
-    } else if (!res.ok) {
-      throw new Error('There was an error checking the device coverage')
-    }
+    getReachability(checkUrl)
   }
 
   return new Promise((resolve, reject) => {
@@ -122,4 +132,5 @@ export async function openCheckUrl(checkUrl, customConfig) {
 export default {
   DeviceCoverageErrors,
   openCheckUrl,
+  getReachability
 }
