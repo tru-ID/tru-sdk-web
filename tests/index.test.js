@@ -15,6 +15,40 @@ describe('WEB SDK', () => {
     expect(truID.openCheckUrl()).rejects.toThrow()
   })
 
+  test('getReachability is successful', async () => {
+    const coverageResponse = {
+      country_code: "GB",
+      network_id: "12453",
+      network_name: "EE UK",
+      products: [{product_id: "PCK", product_name: "Phone Check"}, {product_id: "SCK", product_name: "Sim Check"}, {product_id: "SUK", product_name: "Subscriber Check"}],
+      _links: {self: {href: "https://eu.api.tru.id/public/coverage/v0.1/device_ip"}},
+    };
+
+    const coverage = nock(baseUrl)
+      .get('/public/coverage/v0.1/device_ip')
+      .reply(200, coverageResponse)
+
+      await truID.getReachability(testUrl)
+      expect(coverage.isDone()).toBe(true)
+
+      await expect(coverageResponse).toHaveProperty('country_code')
+  })
+
+  test('getReachability is failed with not Mobile IP', async () => {
+    const coverageResponse = {
+      type: "https://developer.tru.id/docs/reference/api-errors#not_mobile_ip",
+      title: "Precondition Failed",
+      detail: "Not a mobile IP"
+    };
+
+    const coverage = nock(baseUrl)
+      .get('/public/coverage/v0.1/device_ip')
+      .reply(412, coverageResponse)
+
+      await truID.getReachability(testUrl)
+      expect(coverage.isDone()).toBe(true)
+  })
+
   test('phone check is successful', async () => {
     const coverage = nock(baseUrl)
       .get('/public/coverage/v0.1/device_ip')
