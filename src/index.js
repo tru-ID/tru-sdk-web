@@ -37,7 +37,7 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
 }
 
 /**
- * Opens the provide `apiBaseUrl` in order to perform the Reachability check.
+ * Opens the provided `apiBaseUrl` in order to perform the Reachability check.
  *
  * A Reachability check is a test if the current device's active data connection is one of a mobile carrier, and that this carrier is supported by tru.ID's Phone, Subscriber, and SIM checks.
  *
@@ -95,7 +95,15 @@ export async function openCheckUrl(checkUrl, customConfig) {
   // Check device coverage
   // unless the user is passing checkDeviceCoverage:false to skip the check
   if (config.checkDeviceCoverage) {
-    getReachability(checkUrl)
+    const coverage = await getReachability(checkUrl)
+
+    if (coverage.status !== 200) {
+      const err = new Error(coverage.body)
+      err.body = coverage.body
+      err.code = coverage.status
+
+      throw err
+    }
   }
 
   return new Promise((resolve, reject) => {
