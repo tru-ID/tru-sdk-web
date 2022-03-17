@@ -42,6 +42,8 @@ export function _createIFrameSrc(checkUrl, config = { debug: false }) {
  * A Reachability check is a test if the current device's active data connection is one of a mobile carrier, and that this carrier is supported by tru.ID's Phone, Subscriber, and SIM checks.
  *
  * @param {String} apiBaseUrl The tru.ID `base_url` used to communicate with the tru.ID APIs. For example: `https://eu.api.tru.id`.
+ * 
+ * @return { reachable: Boolean, body: { network_id: String, network_name: String, country_code: String, products: [] }, status: Integer }
  */
 export async function getReachability(apiBaseUrl) {
   if (!apiBaseUrl) {
