@@ -30,18 +30,15 @@ describe('WEB SDK', () => {
 
     const res = await truID.getReachability(testUrl)
     expect(coverage.isDone()).toBe(true)
+    expect(res).toHaveProperty('reachable', true)
     expect(res.body).toHaveProperty('country_code', coverageResponse.country_code)
   })
 
   test('getReachability failed with error "Not Mobile IP"', async () => {
     const coverageResponse = {
-      reachable: false,
-      body: {
-        type: "https://developer.tru.id/docs/reference/api-errors#not_mobile_ip",
-        title: "Precondition Failed",
-        detail: "Not a mobile IP"
-      },
-      status: 412
+      type: "https://developer.tru.id/docs/reference/api-errors#not_mobile_ip",
+      title: "Precondition Failed",
+      detail: "Not a mobile IP"
     };
 
     const coverage = nock(baseUrl)
@@ -50,7 +47,8 @@ describe('WEB SDK', () => {
 
     const res = await truID.getReachability(testUrl)
     expect(coverage.isDone()).toBe(true)
-    expect(res).toHaveProperty('reachable', coverageResponse.reachable)
+    expect(res).toHaveProperty('reachable', false)
+    expect(res.body).toHaveProperty('detail', coverageResponse.detail)
   })
 
   test('phone check is successful', async () => {
