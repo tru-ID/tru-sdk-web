@@ -1,4 +1,4 @@
-# tru.ID SDK for Web Applications
+# tru.ID SDK for Mobile Web Applications
 
 [![License][license-image]][license-url]
 
