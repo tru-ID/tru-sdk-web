@@ -49,7 +49,7 @@ When installed via a CDN a `tru.ID` global is installed.
 ```js
 import truID from '@tru_id/tru-sdk-web'
 
-await truID.getReachability(checkUrl)
+truID.getReachability(checkUrl)
 ```
 
 #### PhoneCheck
@@ -59,7 +59,7 @@ When installed via NPM the imported object exposes the `openCheckUrl` function.
 ```js
 import truID from '@tru_id/tru-sdk-web'
 
-await truID.openCheckUrl(checkUrl, config)
+truID.openCheckUrl(checkUrl, config)
 ```
 
 ### `openCheckUrl` Config
@@ -92,108 +92,6 @@ The configuration options are:
   // if the device is on a mobile IP
   // Defaults to true
   checkDeviceCoverage: boolean
-}
-```
-
-## Examples
-
-### Via jsDelivr CDN
-
-`https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js`
-
-```html
-<body>
-  <span id="check_message"></span>
-  <form id="phone_check_form">
-    <!-- Element to get the user's phone number -->
-    <input type="tel" id="phone_number" required />
-    <input type="submit" id="phone_check_button" value="Check" />
-  </form>
-
-  <script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
-  <script>
-    checkCoverage()
-
-    async function checkCoverage() {
-      const button = document.getElementById('phone_check_button')
-      const checkMessage = document.getElementById('check_message')
-      const deviceCoverage = await tru.ID.getReachability('https://{data_residency}.api.tru.id')
-
-      if (deviceCoverage.status === 200) {
-        button.disabled = false
-      } else if (deviceCoverage.status === 400) {
-        // tru.ID has no coverage for this mobile network operator
-        button.disabled = true
-        checkMessage.textContent = 'There is no coverage for this mobile network operator, try alternative solutions for verifying user.'
-      } else if (deviceCoverage.status === 412) {
-        // The IP address is not a mobile IP address, tell the user to turn off WiFi and retry.
-        button.disabled = true
-        checkMessage.textContent = 'This device is not on a mobile IP address, please turn WiFi off and try again.'
-      } else {
-        // Unexpected result from device coverage check.
-        checkMessage.textContent = 'Unexpected error, please retry.'
-        button.disabled = true
-      }
-    }
-
-    async function phoneCheck(ev) {
-        ev.preventDefault()
-
-        // POST to your own server
-        // to create the PhoneCheck resource for the phone number
-        const phoneCheckResource = await fetch('/your-server/phone-check', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                phone_number: document.getElementById('phone_number').value
-            })
-        })
-
-        // use the tru.ID web SDK to navigate to the check_url
-        try {
-          await tru.ID.openCheckUrl(phoneCheckResource.body.check_url)
-        } catch (e) {
-          if (e.code === tru.ID.DeviceCoverageErrors.NotMobileIP) {
-            // tell the user they should turn off the wifi
-            // and use the mobile connection before proceeding
-          }
-        }
-    }
-
-    document.getElementById('phone_check_form')
-        .addEventListener('submit', phoneCheck)
-  </script>
-</body>
-```
-
-### Via NPM
-
-```sh
-$ npm install @tru_id/tru-sdk-web
-```
-
-```js
-import truID from '@tru_id/tru-sdk-web'
-
-async function getReachability() {
-  const deviceCoverage = await tru.ID.getReachability('https://{data_residency}.api.tru.id')
-
-  if (deviceCoverage.status === 200) {
-    // tru.ID has coverage.
-  } else if (deviceCoverage.status === 400) {
-    // tru.ID has no coverage for this mobile network operator
-  } else if (deviceCoverage.status === 412) {
-    // The IP address is not a mobile IP address, tell the user to turn off WiFi and retry.
-  } else {
-    // Unexpected result from device coverage check.
-  }
-}
-
-async function handlePhoneCheckCreation(result) {
-  const checkUrl = result.check_url
-  await truID.openCheckUrl(checkUrl)
 }
 ```
 
