@@ -1,16 +1,8 @@
-# tru.ID SDK for Web Applications
+# tru.ID SDK for Mobile Web Applications
 
 [![License][license-image]][license-url]
 
 The Web SDK for tru.ID providing a helper function for requesting the `check_url` for [PhoneCheck](https://tru.id/docs/phone-check) and [SubscriberCheck](https://tru.id/docs/subscriber-check).
-
-With the default `config` the SDK will call the public Reachability API and try to determine if the device is using a mobile IP.
-
-If the device IP belongs to a MNO (Mobile Network Operator) that tru.ID doesn't support it will throw an error with the message `tru.ID:sdk-web MNO not supported`
-
-If the device IP is not from a mobile network it will throw an error with the message `tru.ID:sdk-web Not a mobile IP`, in this case the user might be using the wifi with a broadband connection.
-
-If you want to ignore this check you can pass `{ checkDeviceCoverage: false }` in the `config` and proceed regardless.
 
 ## Installation
 
@@ -30,6 +22,17 @@ $ npm install @tru_id/tru-sdk-web
 
 ### Via jsDelivr CDN
 
+#### Reachability Check
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
+<script>
+  tru.ID.getReachability(url)
+</script>
+```
+
+#### PhoneCheck
+
 When installed via a CDN a `tru.ID` global is installed.
 
 ```html
@@ -41,15 +44,25 @@ When installed via a CDN a `tru.ID` global is installed.
 
 ### Via NPM
 
+#### Reachability Check
+
+```js
+import truID from '@tru_id/tru-sdk-web'
+
+truID.getReachability(checkUrl)
+```
+
+#### PhoneCheck
+
 When installed via NPM the imported object exposes the `openCheckUrl` function.
 
 ```js
 import truID from '@tru_id/tru-sdk-web'
 
-await truID.openCheckUrl(checkUrl, config)
+truID.openCheckUrl(checkUrl, config)
 ```
 
-### Config
+### `openCheckUrl` Config
 
 The `openCheckUrl` function takes an optional `config` Object argument:
 
@@ -79,69 +92,6 @@ The configuration options are:
   // if the device is on a mobile IP
   // Defaults to true
   checkDeviceCoverage: boolean
-}
-```
-
-## Examples
-
-### Via jsDelivr CDN
-
-`https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js`
-
-```html
-<body>
-  <form id="phone_check_form">
-    <!-- Element to get the user's phone number -->
-    <input type="tel" id="phone_number" required />
-    <input type="submit" value="Check" />
-  </form>
-
-  <script src="https://cdn.jsdelivr.net/npm/@tru_id/tru-sdk-web/dist/tru-id-sdk.umd.js"></script>
-  <script>
-    async phoneCheck(ev) {
-        ev.preventDefault()
-
-        // POST to your own server
-        // to create the PhoneCheck resource for the phone number
-        const phoneCheckResource = await fetch('/your-server/phone-check', {
-            method: 'POST'
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                phone_number: document.getElementById('phone_number')
-            })
-        })
-
-        // use the tru.ID web SDK to navigate to the check_url
-        try {
-          await tru.ID.openCheckUrl(phoneCheckResource.check_url)
-        } catch (e) {
-          if (e.code === tru.ID.DeviceCoverageErrors.NotMobileIP) {
-            // tell the user they should turn off the wifi
-            // and use the mobile connection before proceeding
-          }
-        }
-    }
-
-    document.getElementById('phone_check_form')
-        .addEventListener('submit', phoneCheck)
-  </script>
-</body>
-```
-
-### Via NPM
-
-```sh
-$ npm install @tru_id/tru-sdk-web
-```
-
-```js
-import truID from '@tru_id/tru-sdk-web'
-
-async function handlePhoneCheckCreation(result) {
-  const checkUrl = result.check_url
-  await truID.openCheckUrl(checkUrl)
 }
 ```
 

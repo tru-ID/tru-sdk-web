@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/tru-ID/tru-sdk-web/compare/v0.0.8...v0.0.9) (2022-03-24)
+
+* Added improvements to structure of `README`, and moved example from `README` to `example` directory
+
 ### [0.0.8](https://github.com/tru-ID/tru-sdk-web/compare/v0.0.7...v0.0.8) (2022-03-18)
 
 * Created a standalone function for `Reachability` and updated `openCheckUrl` to call `getReachability`.
