@@ -49,7 +49,7 @@ When installed via a CDN a `tru.ID` global is installed.
 ```js
 import truID from '@tru_id/tru-sdk-web'
 
-truID.getReachability(checkUrl)
+truID.getReachability(url)
 ```
 
 #### PhoneCheck
