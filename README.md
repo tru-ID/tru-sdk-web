@@ -91,7 +91,11 @@ The configuration options are:
   // It will run the device coverage check to determine
   // if the device is on a mobile IP
   // Defaults to true
-  checkDeviceCoverage: boolean
+  checkDeviceCoverage: boolean,
+
+  // Depending on what PhoneCheck API version the check is created with.
+  // Defaults to "v0.1"
+  version: "v0.1" | "v0.2",
 }
 ```
 

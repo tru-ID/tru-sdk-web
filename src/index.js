@@ -74,6 +74,7 @@ export async function getReachability(apiBaseUrl) {
  * @param {Number} customConfig.windowCloseTimeout The timeout period in milliseconds where the window is closed if `customConfig.checkMethod` is set to `window`. Defaults to 3000 milliseconds.
  * @param {Boolean} customConfig.checkDeviceCoverage It will not try to check the device IP against the coverage API.
  * @param {Boolean} customConfig.debug It will console log more debug info.
+ * @param {String} customConfig.version Based on the PhoneCheck API version to determine the method of flow.
  */
 export async function openCheckUrl(checkUrl, customConfig) {
   const defaultConfig = {
@@ -81,7 +82,9 @@ export async function openCheckUrl(checkUrl, customConfig) {
     debug: false,
     checkDeviceCoverage: true,
     windowCloseTimeout: 3000,
+    version: 'v0.1',
   }
+
   const config = Object.assign(defaultConfig, customConfig)
 
   function log(...args) {
@@ -109,6 +112,12 @@ export async function openCheckUrl(checkUrl, customConfig) {
   }
 
   return new Promise((resolve, reject) => {
+    if (config.version === 'v0.2') {
+      window.location = checkUrl
+
+      return
+    }
+
     if (config.checkMethod === 'image') {
       const iframe = document.createElement('iframe')
       iframe.style.display = 'none'
