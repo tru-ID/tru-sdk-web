@@ -82,7 +82,7 @@ export async function openCheckUrl(checkUrl, customConfig) {
     debug: false,
     checkDeviceCoverage: true,
     windowCloseTimeout: 3000,
-    version: 'v0.1',
+    version: 'v0.2',
   }
 
   const config = Object.assign(defaultConfig, customConfig)

@@ -94,7 +94,7 @@ The configuration options are:
   checkDeviceCoverage: boolean,
 
   // Depending on what PhoneCheck API version the check is created with.
-  // Defaults to "v0.1"
+  // Defaults to "v0.2"
   version: "v0.1" | "v0.2",
 }
 ```
