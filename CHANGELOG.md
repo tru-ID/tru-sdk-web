@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/tru-ID/tru-sdk-web/compare/v0.0.10...v0.0.11) (2022-07-22)
+
+* Added Check version v0.2 functionality.
+
 ### [0.0.10](https://github.com/tru-ID/tru-sdk-web/compare/v0.0.8...v0.0.10) (2022-03-24)
 
 * Fixed typo in usage example in `README`, incorrectly referring to `url` as `checkUrl`.
