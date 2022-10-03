@@ -1,6 +1,6 @@
 {
   "name": "@tru_id/tru-sdk-web",
-  "version": "0.0.5",
+  "version": "0.0.11",
   "description": "SDK for tru.ID that provides a helper method for requesting the `check_url` for PhoneCheck and SubscriberCheck",
   "author": {
     "name": "tru.ID",
